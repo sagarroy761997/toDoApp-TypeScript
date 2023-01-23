@@ -11,7 +11,6 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-  InputLabel,
   MenuItem,
   FormControl,
   Select,
@@ -20,31 +19,45 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import IconButton from '@mui/material/IconButton'
 import AddBoxIcon from '@mui/icons-material/AddBox'
-// import { makeStyles } from '@mui/styles'
+
 import LabelImportantIcon from '@mui/icons-material/LabelImportant'
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import HourglassTopIcon from '@mui/icons-material/HourglassTop'
 import ListComponent from './Components/ListComponent'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
-// const useStyles = makeStyles(() => ({
-//   date: {
-//     margin: '17px',
-//     backgroundColor: 'black'
-//   }
-// }))
+
 export interface listInterface {
   task: string
   description: string
   priority: number
   deadline: string
 }
-
+const getDateTime = (): string => {
+  const tempDate = new Date()
+  const year = tempDate.getFullYear()
+  let month: string
+  let theDate: string
+  const value1 = tempDate.getMonth() + 1
+  if (value1 > 9) {
+    month = String(value1)
+  } else {
+    month = `0${value1}`
+  }
+  const value2 = tempDate.getMonth() + 1
+  if (value2 > 9) {
+    theDate = String(value2)
+  } else {
+    theDate = `0${value1}`
+  }
+  const date = `${year}-${month}-${theDate}`
+  return date
+}
 function App (): JSX.Element {
   const [list, setList] = useState<listInterface[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [task, setTask] = useState<string>('')
   const [description, setDescription] = useState<string>('')
-  const [deadline, setDeadline] = useState('')
+  const [deadline, setDeadline] = useState<string>(getDateTime())
   const [priority, setPriority] = useState<number>(1)
 
   const handleClickOpen = (): void => {
@@ -70,34 +83,30 @@ function App (): JSX.Element {
 
   const changeDeadline = (event: ChangeEvent<HTMLInputElement>): void => {
     setDeadline(event.target.value)
+    console.log(typeof (event.target.value))
   }
   const changePriority = (event: any): void => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     setPriority(event.target.value)
-    // console.log(event.target)
   }
-  //   const getDateTime = () => {
-  //     let tempDate = new Date();
-  //     let date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' + tempDate.getDate() +' '+ tempDate.getHours()+':'+ tempDate.getMinutes()+':'+ tempDate.getSeconds();
-  //     return date;
-  //  }
-  // console.log(typeof(getDateTime()));
-
   function changeList (): void {
-    setList([
-      ...list,
-      {
-        task,
-        description,
-        priority,
-        deadline
-      }
-    ])
-    setTask('')
-    setDescription('')
-    setDeadline('')
-    setPriority(1)
-    // console.log(list);
+    if ((task.length === 0 && description.length === 0)) {
+      alert('task and description should not be empty')
+    } else {
+      setList([
+        ...list,
+        {
+          task,
+          description,
+          priority,
+          deadline
+        }
+      ])
+      setTask('')
+      setDescription('')
+      setDeadline(getDateTime())
+      setPriority(1)
+    }
   }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open1 = Boolean(anchorEl)
@@ -107,8 +116,6 @@ function App (): JSX.Element {
   const handleClose1 = (): void => {
     setAnchorEl(null)
   }
-  // const classes = useStyles()
-  // console.log(classes);
 
   const sortByPriority = (): void => {
     const importantList = list.filter((e) => {
@@ -136,71 +143,6 @@ function App (): JSX.Element {
       return 0
     }))
   }
-  // const sortByDeadline = () => {
-  //   for (let i = 0; i < list.length - 1; i++) {
-  //     if (list[i].deadline > list[i + 1].deadline) {
-  //       let temp = list[i];
-  //       list[i] = list[i + 1];
-  //       list[i + 1] = temp;
-  //     }
-  //   }
-  // };
-  // const sortByLogically = () => {
-
-  //   const importantList = list.filter((e) => {
-  //     return e.priority === 2;
-  //   });
-  //   for (let i = 0; i < importantList.length - 1; i++) {
-  //     if (importantList[i].deadline > list[i + 1].deadline) {
-  //       let temp = importantList[i];
-  //       importantList[i] = importantList[i + 1];
-  //       importantList[i + 1] = temp;
-  //     }
-
-  //   }
-  //   const normalList = list.filter((e) => {
-  //     return e.priority === 1;
-  //   });
-  //   for (let i = 0; i < normalList.length - 1; i++) {
-  //     if (normalList[i].deadline > list[i + 1].deadline) {
-  //       let temp = normalList[i];
-  //       normalList[i] = normalList[i + 1];
-  //       normalList[i + 1] = temp;
-  //     }
-
-  //   }
-  //   const notImportantList = list.filter((e) => {
-  //     return e.priority === 0;
-  //   });
-  //   for (let i = 0; i < notImportantList.length - 1; i++) {
-  //     if (notImportantList[i].deadline > list[i + 1].deadline) {
-  //       let temp = notImportantList[i];
-  //       notImportantList[i] = notImportantList[i + 1];
-  //       notImportantList[i + 1] = temp;
-  //     }
-
-  //   }
-  //   let lowestImportantListDeadline:string=importantList[0].deadline;
-  //   let lowestNotImportantListDeadline:string=notImportantList[0].deadline;
-  //   let lowestNormalListDeadline:string=normalList[0].deadline;
-  //   if(lowestImportantListDeadline>lowestNormalListDeadline){
-  //     if(lowestNormalListDeadline>lowestNotImportantListDeadline){
-  //       setList([...notImportantList,...normalList,...importantList]);
-  //     }
-  //     else{
-  //       setList([...normalList,...notImportantList,...importantList]);
-  //     }
-  //   }else if(lowestImportantListDeadline<lowestNormalListDeadline){
-  //     if(lowestNormalListDeadline>lowestNotImportantListDeadline){
-  //       setList([...notImportantList,...importantList,...normalList]);
-  //     }
-  //     else{
-  //       setList([...notImportantList,...importantList,...normalList]);
-  //     }
-  //   }
-  // }
-  // ;
-
   return (
     <div className="App">
       <Box sx={{ flexGrow: 1 }}>
@@ -258,14 +200,6 @@ function App (): JSX.Element {
                 >
                   Sort by deadline
                 </MenuItem>
-                {/* <MenuItem
-                  onClick={() => {
-                    handleClose1();
-                    sortByLogically();
-                  }}
-                >
-                  Sort by Logic
-                </MenuItem> */}
               </Menu>
             </div>
             <Button color="inherit" onClick={handleClickOpen}>
@@ -283,8 +217,7 @@ function App (): JSX.Element {
               in the form below.
             </DialogContentText>
             <TextField
-              autoFocus
-              margin="dense"
+              className='modalInput'
               label="Add Task"
               type="text"
               fullWidth
@@ -293,23 +226,20 @@ function App (): JSX.Element {
               value={task}
             />
             <TextField
-              autoFocus
-              margin="dense"
+              className='modalInput'
               label="Description"
               multiline
-              rows={4}
+              rows={2}
               type="text"
               fullWidth
               variant="outlined"
               onChange={changeDescription}
               value={description}
             />
-            <FormControl fullWidth>
-              <InputLabel>Priority</InputLabel>
+            <FormControl fullWidth className='modalInput'>
               <Select
-                // defaultValue={priority}
                 value={priority}
-                label="Priority"
+                placeholder="Priority"
                 onChange={changePriority}
               >
                 <MenuItem value={2}>{<LabelImportantIcon />}Important</MenuItem>
@@ -320,8 +250,9 @@ function App (): JSX.Element {
               </Select>
             </FormControl>
             <TextField
+              className='modalInput'
               type="date"
-              // value={deadline}
+              value={deadline}
               inputProps={{ min: '2022-01-01', max: '2999-05-31' }}
               onChange={changeDeadline}
             />
@@ -339,11 +270,13 @@ function App (): JSX.Element {
           </DialogActions>
         </Dialog>
       </Box>
-      <ListComponent
+      {(list.length > 0)
+        ? <ListComponent
         list={list}
         onListChange={handleTask}
 
       />
+        : <Box className='taskBox'><Typography variant='h1' > ADD TASKS</Typography></Box>}
     </div>
   )
 }
