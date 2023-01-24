@@ -35,25 +35,23 @@ const ListComponent = (props: propInterface): JSX.Element => {
     <div>
 
       <TableContainer >
-        <Table sx={{ minWidth: 650, marginTop: 3 }} aria-label="simple table">
+        <Table className='table' aria-label="simple table">
           <TableHead >
-            <TableRow style={{ backgroundColor: '#ede7f6' }}>
-              <TableCell style={{ textAlign: 'center', fontWeight: 'bolder' }}>Priority</TableCell>
-              <TableCell style={{ textAlign: 'center', fontWeight: 'bolder' }}>Task</TableCell>
-              <TableCell style={{ textAlign: 'center', fontWeight: 'bolder' }}>Description</TableCell>
+            <TableRow className='tableRow'>
+              <TableCell className='tableHeaderCell'>Priority</TableCell>
+              <TableCell className='tableHeaderCell'>Task</TableCell>
+              <TableCell className='tableHeaderCell'>Description</TableCell>
 
-              <TableCell style={{ textAlign: 'center', fontWeight: 'bolder' }}>Deadline</TableCell>
-              <TableCell style={{ textAlign: 'center', fontWeight: 'bolder' }}>Actions</TableCell>
+              <TableCell className='tableHeaderCell'>Deadline</TableCell>
+              <TableCell className='tableHeaderCell'>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {props.list.map((row: listInterface, index) => (
               <TableRow
                 key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-
               >
-                <TableCell component="th" scope="row" style={{ textAlign: 'center' }}>
+                <TableCell className="tableCell">
                   {(() => {
                     switch (row.priority) {
                       case 2:
@@ -65,17 +63,17 @@ const ListComponent = (props: propInterface): JSX.Element => {
                     }
                   })()}
                 </TableCell >
-                <TableCell style={{ textAlign: 'center' }}>
+                <TableCell className="tableCell">
                   {row.task}
                 </TableCell>
-                <TableCell style={{ textAlign: 'center' }}>
+                <TableCell className="tableCell">
                   {row.description}
                 </TableCell>
 
-                <TableCell style={{ textAlign: 'center' }}>
+                <TableCell className="tableCell">
                   {row.deadline}
                 </TableCell>
-                <TableCell style={{ textAlign: 'center' }}>
+                <TableCell className="tableCell">
                   <Button
                     onClick={() => {
                       deleteData(row)

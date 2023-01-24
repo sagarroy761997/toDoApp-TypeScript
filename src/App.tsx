@@ -16,8 +16,7 @@ import {
   Select,
   Menu
 } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import IconButton from '@mui/material/IconButton'
+
 import AddBoxIcon from '@mui/icons-material/AddBox'
 
 import LabelImportantIcon from '@mui/icons-material/LabelImportant'
@@ -43,7 +42,7 @@ const getDateTime = (): string => {
   } else {
     month = `0${value1}`
   }
-  const value2 = tempDate.getMonth() + 1
+  const value2 = tempDate.getDate()
   if (value2 > 9) {
     theDate = String(value2)
   } else {
@@ -148,26 +147,13 @@ function App (): JSX.Element {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Task Management App
             </Typography>
             <div>
               <Button
-                id="demo-positioned-button"
-                aria-controls={open ? 'demo-positioned-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
+                className='filter'
                 onClick={handleClick}
-                style={{ color: '#faffff' }}
               >
                 {<FilterAltIcon />}
               </Button>
@@ -252,8 +238,8 @@ function App (): JSX.Element {
             <TextField
               className='modalInput'
               type="date"
-              value={deadline}
-              inputProps={{ min: '2022-01-01', max: '2999-05-31' }}
+              value={getDateTime()}
+              inputProps={{ min: deadline, max: '2999-05-31' }}
               onChange={changeDeadline}
             />
           </DialogContent>
